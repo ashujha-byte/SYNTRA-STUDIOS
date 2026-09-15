@@ -79,7 +79,7 @@ export default function About() {
             A Studio Where <span className="bg-gradient-to-r from-cyan-400 via-teal-300 to-indigo-400 bg-clip-text text-transparent">Design Meets Engineering</span>
           </h2>
           <p className="mt-6 text-slate-300 text-base sm:text-lg font-light leading-relaxed">
-            Syntra Studio is a full-spectrum digital agency. We blend creative vision with technical
+            Ashu Studio is a full-spectrum digital agency. We blend creative vision with technical
             excellence to build products that don't just look stunning — they perform, scale, and
             delight users across the globe.
           </p>

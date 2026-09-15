@@ -4,7 +4,7 @@ import { Plus, Minus } from 'lucide-react';
 
 const faqs = [
   {
-    q: 'What services does Syntra Studio offer?',
+    q: 'What services does Ashu Studio offer?',
     a: 'We offer web development, full-stack development, landing page design, app development, UX/UI design, logo design, poster design, game development, AI integration, and AI agent building. Essentially, everything from concept to launch.',
   },
   {

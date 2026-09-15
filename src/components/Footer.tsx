@@ -75,7 +75,7 @@ export default function Footer() {
           {/* Brand */}
           <div className="flex flex-col items-start">
             <h3 className="font-sans font-black text-2xl tracking-wider text-white uppercase mb-2">
-              SYNTRA STUDIOS
+              Ashu Jha
             </h3>
             <p className="text-sm text-slate-400 leading-relaxed max-w-xs">
               We design. We build. You scale.
@@ -124,7 +124,7 @@ export default function Footer() {
 
         <div className="pt-8 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-xs text-cream-500">
-            &copy; {new Date().getFullYear()} Syntra Studio. All rights reserved.
+            &copy; {new Date().getFullYear()} Ashu Jha. All rights reserved.
           </p>
           <p className="text-xs text-cream-500 font-display tracking-wider">
             We Design <span className="text-cream-500/50">/</span> We Build <span className="text-cyan-400/50">/</span> You Scale

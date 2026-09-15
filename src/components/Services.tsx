@@ -261,7 +261,7 @@ export default function Services() {
                 <div className="flex items-center gap-2">
                   <Sparkles size={16} className="text-cyan-400" />
                   <span className="font-mono text-xs uppercase tracking-widest text-cyan-400">
-                    Syntra Studio &amp; Inquiry
+                    Ashu Studio &amp; Inquiry
                   </span>
                 </div>
                 <button

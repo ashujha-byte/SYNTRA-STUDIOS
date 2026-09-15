@@ -10,7 +10,7 @@ type ChatMessage = {
 const initialMessages: ChatMessage[] = [
   {
     role: 'bot',
-    text: "Hi ! I'm Syntra studios AI assistant, available 24/7. How can I help you today?",
+    text: "Hi ! I'm Ashu Jha  AI assistant, available 24/7. How can I help you today?",
   },
 ];
 
@@ -63,7 +63,7 @@ const knowledge: { keywords: string[]; response: string }[] = [
   {
     keywords: ['hello', 'hi', 'hey', 'start'],
     response:
-      "Hello! Welcome to Syntra Studio. I can answer questions about our services, pricing, timelines, and more. What would you like to know?",
+      "Hello! Welcome to Ashu Studio. I can answer questions about our services, pricing, timelines, and more. What would you like to know?",
   },
 ];
 
@@ -170,7 +170,7 @@ export default function AIChatSupport() {
                 </div>
                 <div>
                   <div className="font-sans font-bold text-sm text-white tracking-wide">
-                    SYNTRA STUDIOS AI
+                    ASHU STUDIOS AI
                   </div>
                   <div className="text-[11px] font-mono text-emerald-400 flex items-center gap-1.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />

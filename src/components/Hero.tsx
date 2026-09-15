@@ -42,7 +42,7 @@ export default function Hero() {
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-cyan-500/30 bg-cyan-500/10 backdrop-blur-md mb-6 text-xs font-mono tracking-widest text-cyan-300 uppercase"
           >
             <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-            <span>Syntra Digital Studios</span>
+            <span>ASHU Digital Studios</span>
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
           </motion.div>
 
@@ -67,7 +67,7 @@ export default function Hero() {
             transition={{ duration: 0.6, delay: 0.25 }}
             className="mt-6 text-base sm:text-lg text-slate-200 max-w-xl font-light leading-relaxed drop-shadow-md"
           >
-            Syntra Studio crafts high-impact digital experiences — from 3D interactive web platforms to full-stack applications, intelligent AI workflows, and precision brand design systems.
+            Ashu Studio crafts high-impact digital experiences — from 3D interactive web platforms to full-stack applications, intelligent AI workflows, and precision brand design systems.
           </motion.p>
 
           {/* Action CTAs */}

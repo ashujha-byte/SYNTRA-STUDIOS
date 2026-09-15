@@ -22,7 +22,7 @@ export default function Navbar() {
 
   const WHATSAPP_NUMBER = '9572497103';
   const whatsappUrl = `https://wa.me/${9572497103}?text=${encodeURIComponent(
-    'Hi Syntra Studio, I would like to discuss a project!'
+    'Hi Ashu Jha, I would like to discuss a project!'
   )}`;
 
   useEffect(() => {
@@ -51,10 +51,10 @@ export default function Navbar() {
           {/* Brand Logo */}
           <button onClick={() => scrollTo('#home')} className="flex items-center gap-2.5 text-left group">
             <span className="font-sans font-black text-2xl tracking-wider text-white group-hover:text-cyan-400 transition-colors uppercase">
-              SYNTRA
+              ASHU
             </span>
             <span className="font-sans font-black text-2xl tracking-wider text-white group-hover:text-cyan-400 transition-colors uppercase">
-              STUDIO
+              JHA
             </span>
           </button>
 
