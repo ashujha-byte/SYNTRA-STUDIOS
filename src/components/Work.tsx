@@ -15,14 +15,14 @@ const projects: ProjectItem[] = [
     title: 'Linkdock website ',
     category: 'Web APP',
     desc: 'LinkDock is a unified directory platform built to eliminate bookmark clutter.',
-    image: 'public/1 Project.png',
+    image: '/1 Project.png',
     link: 'https://linkdockofficial.netlify.app/',
   },
   {
     title: 'Laksh Empires Real State',
     category: 'Web APP',
     desc: 'Laksh Empire — An ultra-luxurious real estate platform featuring immersive property.',
-    image: 'public/2 project.png',
+    image: '/2 project.png',
     link: 'https://lakshempires.netlify.app/',
   },
   {

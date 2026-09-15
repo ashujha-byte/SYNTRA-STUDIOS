@@ -13,7 +13,7 @@ export default function Hero() {
       {/* 🎬 Background Video Layer */}
       <video
         key={VIDEO_URL}
-        src="public/hero.mp4"
+        src="/hero.mp4"
         autoPlay
         loop
         muted
