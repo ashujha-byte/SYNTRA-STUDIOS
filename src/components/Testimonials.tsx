@@ -221,7 +221,7 @@ export default function Testimonials() {
                 </span>
                 <h3 className="text-2xl font-bold text-white mt-1">Leave A Review</h3>
                 <p className="text-xs text-slate-400 mt-1 font-light">
-                  Share your honest experience working with SYNTRA Studio.
+                  Share your honest experience working with Ashu Jha.
                 </p>
               </div>
 
@@ -276,7 +276,7 @@ export default function Testimonials() {
                         required
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        placeholder="John Doe"
+                        placeholder=""
                         className="w-full px-3.5 py-2.5 rounded-xl bg-white/[0.04] border border-white/10 text-white text-xs placeholder-slate-500 focus:outline-none focus:border-cyan-400/60"
                       />
                     </div>
@@ -288,7 +288,7 @@ export default function Testimonials() {
                         type="text"
                         value={formData.role}
                         onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-                        placeholder="Founder / CEO"
+                        placeholder=""
                         className="w-full px-3.5 py-2.5 rounded-xl bg-white/[0.04] border border-white/10 text-white text-xs placeholder-slate-500 focus:outline-none focus:border-cyan-400/60"
                       />
                     </div>
@@ -303,7 +303,7 @@ export default function Testimonials() {
                       type="text"
                       value={formData.company}
                       onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                      placeholder="e.g. Acme Corp"
+                      placeholder=""
                       className="w-full px-3.5 py-2.5 rounded-xl bg-white/[0.04] border border-white/10 text-white text-xs placeholder-slate-500 focus:outline-none focus:border-cyan-400/60"
                     />
                   </div>
@@ -318,7 +318,7 @@ export default function Testimonials() {
                       rows={3}
                       value={formData.comment}
                       onChange={(e) => setFormData({ ...formData, comment: e.target.value })}
-                      placeholder="Write your experience working with SYNTRA Studio..."
+                      placeholder=""
                       className="w-full px-3.5 py-2.5 rounded-xl bg-white/[0.04] border border-white/10 text-white text-xs placeholder-slate-500 focus:outline-none focus:border-cyan-400/60 resize-none"
                     />
                   </div>
