@@ -14,7 +14,7 @@ export default function Contact() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [status, setStatus] = useState<'idle' | 'loading' | 'success'>('idle');
 
-  const YOUR_EMAIL = 'syntracaresupport@gmail.com';
+  const YOUR_EMAIL = 'aetherixofficialsupport@gmail.com';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

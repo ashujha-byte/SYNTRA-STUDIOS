@@ -278,7 +278,7 @@ export default function AIChatSupport() {
               </div>
               <div className="flex items-center justify-center gap-1 mt-2 text-[10px] font-mono text-slate-500">
                 <Sparkles className="w-3 h-3 text-cyan-400/70" />
-                <span>Syntra Neural Engine · 24/7 Live</span>
+                <span>Ashu Jha · 24/7 Live</span>
               </div>
             </div>
           </motion.div>

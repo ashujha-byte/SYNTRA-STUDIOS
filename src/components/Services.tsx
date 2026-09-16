@@ -114,7 +114,7 @@ export default function Services() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const YOUR_EMAIL = 'syntracaresupport@gmail.com';
+  const YOUR_EMAIL = 'aetherixofficialsupport@gmai.com';
 
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -290,7 +290,7 @@ export default function Services() {
                   </div>
 
                   <div className="space-y-2">
-                    <span className="font-mono text-xs uppercase text-slate-400 tracking-wider">About This Service</span>
+                    <span className="font-mono text-xs uppercase text-cream-500 tracking-wider">About This Service</span>
                     <p className="text-sm text-slate-300 leading-relaxed font-light">
                       {selectedService.overview}
                     </p>
@@ -298,7 +298,7 @@ export default function Services() {
 
                   {/* Deliverables */}
                   <div className="space-y-3">
-                    <span className="font-mono text-xs uppercase text-slate-400 tracking-wider">What You Receive</span>
+                    <span className="font-mono text-xs uppercase text-cream-500 tracking-wider">What You Receive</span>
                     <div className="space-y-2">
                       {selectedService.deliverables.map((item, idx) => (
                         <div key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-200">
@@ -311,7 +311,7 @@ export default function Services() {
 
                   {/* Tools Stack */}
                   <div className="space-y-2">
-                    <span className="font-mono text-xs uppercase text-slate-400 tracking-wider">Tech &amp; Tools Used</span>
+                    <span className="font-mono text-xs uppercase text-cream-500 tracking-wider">Tech &amp; Tools Used</span>
                     <div className="flex flex-wrap gap-2">
                       {selectedService.toolsUsed.map((tool) => (
                         <span
