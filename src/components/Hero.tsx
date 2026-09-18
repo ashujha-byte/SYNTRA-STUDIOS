@@ -13,12 +13,12 @@ export default function Hero() {
       {/* 🎬 Background Video Layer */}
       <video
         key={VIDEO_URL}
-        src="/hero.mp4"
+        src="/hero1.mp4"
         autoPlay
         loop
         muted
         playsInline
-        className="absolute inset-0 w-full h-full object-cover z-0 opacity-85 brightness-110 contrast-110 saturate-125 transition-opacity duration-700"
+        className="absolute inset-0 w-full h-full object-cover z-9 opacity-150 brightness-150 contrast-160 saturate-125 transition-opacity duration-700"
       />
 
       {/* 🌑 Dark Cinematic Overlays for Perfect Text Contrast */}
@@ -51,7 +51,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 25 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.1 }}
-            className="font-sans text-5xl sm:text-6xl lg:text-8xl font-extrabold leading-[1.02] tracking-tight text-white drop-shadow-[0_10px_30px_rgba(0,0,0,0.9)]"
+            className="font-sans text-5xl sm:text-4xl lg:text-6xl font-bold leading-[1.02] tracking-tight text-white drop-shadow-[0_10px_30px_rgba(0,0,0,0.9)]"
           >
             We Design.<br />
             We Build.<br />

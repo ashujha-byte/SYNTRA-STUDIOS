@@ -88,9 +88,9 @@ export default function Work() {
 
   return (
     <section id="work" className="relative py-24 lg:py-32 overflow-hidden">
-      <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-pink-500/5 rounded-full blur-[120px]" />
+      <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-pink-500/5 rounded-full blur-[120px] pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -180,12 +180,13 @@ export default function Work() {
           ))}
         </div>
 
-        {/* 🔘 View All Button (Only appears if projects > 6) */}
+        {/* 🔘 View All Button (Fixed for Mobile Taps) */}
         {filtered.length > 6 && (
-          <div className="mt-14 text-center">
+          <div className="mt-14 text-center relative z-20">
             <button
-              onClick={() => setShowAll(!showAll)}
-              className="px-8 py-3.5 rounded-full border border-cyan-400/40 bg-cyan-500/10 hover:bg-cyan-400 hover:text-black text-cyan-300 font-mono text-xs uppercase tracking-widest transition-all inline-flex items-center gap-2 shadow-[0_0_20px_rgba(6,182,212,0.2)] active:scale-95"
+              type="button"
+              onClick={() => setShowAll((prev) => !prev)}
+              className="px-8 py-3.5 rounded-full border border-cyan-400/40 bg-cyan-500/10 hover:bg-cyan-400 hover:text-black text-cyan-300 font-mono text-xs uppercase tracking-widest transition-all inline-flex items-center gap-2 shadow-[0_0_20px_rgba(6,182,212,0.2)] cursor-pointer touch-manipulation select-none"
             >
               <span>{showAll ? 'Show Less Projects' : `View All Projects (${filtered.length})`}</span>
               {showAll ? <ChevronUp size={16} /> : <ChevronDown size={16} />}

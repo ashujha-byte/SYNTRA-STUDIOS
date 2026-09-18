@@ -32,14 +32,14 @@ export default function Contact() {
       return;
     }
 
-    // 2. Email Check (Proper format with domain)
+    // 2. Email Check
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!email || !emailPattern.test(email)) {
       setErrorMessage('Please enter a valid email address (e.g. name@domain.com).');
       return;
     }
 
-    // 3. Phone Check (Minimum 10 digits)
+    // 3. Phone Check
     const numericPhone = phone.replace(/\D/g, '');
     if (!phone || numericPhone.length < 10) {
       setErrorMessage('Please enter a valid phone or WhatsApp number with at least 10 digits.');
@@ -60,34 +60,37 @@ export default function Contact() {
 
     setStatus('loading');
 
-    const formData = new FormData();
-    formData.append('Client Name', name);
-    formData.append('Client Email', email);
-    formData.append('Phone Number', phone);
-    formData.append('Service Needed', service);
-    formData.append('Message / Goals', message);
-    formData.append('_subject', `Direct Studio Contact from ${name}`);
-    formData.append('_captcha', 'false');
-
     try {
-      const res = await fetch(`https://formsubmit.co/${YOUR_EMAIL}`, {
+      const res = await fetch(`https://formsubmit.co/ajax/${YOUR_EMAIL}`, {
         method: 'POST',
-        body: formData,
         headers: {
-          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
         },
+        body: JSON.stringify({
+          'Client Name': name,
+          'Client Email': email,
+          'Phone / WhatsApp': phone,
+          'Service Needed': service,
+          'Project Message': message,
+          _subject: `New Lead: ${name} wants ${service}`,
+          _template: 'table',
+          _captcha: 'false',
+        }),
       });
 
-      if (res.ok) {
+      const data = await res.json();
+
+      if (res.ok && data.success !== 'false') {
         setStatus('success');
         setForm({ name: '', email: '', phone: '', service: '', message: '' });
         setTimeout(() => setStatus('idle'), 5000);
       } else {
-        setErrorMessage('Failed to send message. Please try again or reach out on WhatsApp.');
+        setErrorMessage(data.message || 'Please check your email inbox to activate FormSubmit first.');
         setStatus('idle');
       }
     } catch {
-      setErrorMessage('Error submitting inquiry. Please connect with us directly on WhatsApp.');
+      setErrorMessage('Error submitting inquiry. Please connect directly via WhatsApp.');
       setStatus('idle');
     }
   };
@@ -100,7 +103,7 @@ export default function Contact() {
       <div className="max-w-6xl mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
           
-          {/* 💬 LEFT SIDE: Heading & Description */}
+          {/* 💬 LEFT SIDE */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -120,7 +123,7 @@ export default function Contact() {
             </p>
           </motion.div>
 
-          {/* 📝 RIGHT SIDE: Compact Validated Form */}
+          {/* 📝 RIGHT SIDE */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -138,7 +141,6 @@ export default function Contact() {
               </div>
             ) : (
               <form onSubmit={handleSubmit} noValidate className="space-y-4">
-                {/* 🚨 Validation Error Message Banner */}
                 {errorMessage && (
                   <div className="p-3 rounded-xl border border-red-500/30 bg-red-500/10 text-red-400 text-xs font-mono">
                     {errorMessage}
@@ -157,7 +159,7 @@ export default function Contact() {
                         type="text"
                         value={form.name}
                         onChange={(e) => setForm({ ...form, name: e.target.value })}
-                        placeholder=""
+                        placeholder="John Doe"
                         className="w-full pl-10 pr-3.5 py-2.5 rounded-lg bg-white/[0.03] border border-white/10 text-white text-sm placeholder-slate-500 focus:border-cyan-400 focus:outline-none transition-all"
                       />
                     </div>
@@ -172,14 +174,14 @@ export default function Contact() {
                         type="email"
                         value={form.email}
                         onChange={(e) => setForm({ ...form, email: e.target.value })}
-                        placeholder=""
+                        placeholder="name@domain.com"
                         className="w-full pl-10 pr-3.5 py-2.5 rounded-lg bg-white/[0.03] border border-white/10 text-white text-sm placeholder-slate-500 focus:border-cyan-400 focus:outline-none transition-all"
                       />
                     </div>
                   </div>
                 </div>
 
-                {/* Phone Number & Custom Service Needed */}
+                {/* Phone & Service */}
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
                     <label className="text-xs text-slate-400 mb-1.5 block font-mono">
@@ -191,7 +193,7 @@ export default function Contact() {
                         type="tel"
                         value={form.phone}
                         onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                        placeholder=""
+                        placeholder="+91 98765 43210"
                         className="w-full pl-10 pr-3.5 py-2.5 rounded-lg bg-white/[0.03] border border-white/10 text-white text-sm placeholder-slate-500 focus:border-cyan-400 focus:outline-none transition-all"
                       />
                     </div>
@@ -206,14 +208,14 @@ export default function Contact() {
                         type="text"
                         value={form.service}
                         onChange={(e) => setForm({ ...form, service: e.target.value })}
-                        placeholder=""
+                        placeholder="e.g. Website, App, SEO"
                         className="w-full pl-10 pr-3.5 py-2.5 rounded-lg bg-white/[0.03] border border-white/10 text-white text-sm placeholder-slate-500 focus:border-cyan-400 focus:outline-none transition-all"
                       />
                     </div>
                   </div>
                 </div>
 
-                {/* Message Box */}
+                {/* Message */}
                 <div>
                   <label className="text-xs text-slate-400 mb-1.5 block font-mono">
                     Your Message / Goals <span className="text-cyan-400">*</span>
@@ -224,13 +226,13 @@ export default function Contact() {
                       value={form.message}
                       onChange={(e) => setForm({ ...form, message: e.target.value })}
                       rows={3}
-                      placeholder=""
+                      placeholder="Brief details about your project goals..."
                       className="w-full pl-10 pr-3.5 py-2.5 rounded-lg bg-white/[0.03] border border-white/10 text-white text-sm placeholder-slate-500 focus:border-cyan-400 focus:outline-none transition-all resize-none"
                     />
                   </div>
                 </div>
 
-                {/* Submit Button */}
+                {/* Submit */}
                 <button
                   type="submit"
                   disabled={status === 'loading'}

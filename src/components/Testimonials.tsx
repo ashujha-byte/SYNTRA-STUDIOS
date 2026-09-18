@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
-import { Star, CheckCircle, Quote, PlusCircle, X, Send, Loader2 } from 'lucide-react';
+import { Star, CheckCircle, Quote, PlusCircle, X, Send, Loader2, AlertCircle } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 
 interface ReviewItem {
@@ -9,7 +9,7 @@ interface ReviewItem {
   role: string | null;
   company: string | null;
   rating: number;
-  created_at: string;
+  created_at?: string;
   comment: string;
 }
 
@@ -20,6 +20,7 @@ export default function Testimonials() {
   const [hoverRating, setHoverRating] = useState(0);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -54,11 +55,17 @@ export default function Testimonials() {
   // 📝 Real Review Submit Karna
   const handlePostReview = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name.trim() || !formData.comment.trim()) return;
+    setErrorMessage(null);
+
+    if (!formData.name.trim() || !formData.comment.trim()) {
+      setErrorMessage('Please fill in your name and review comment.');
+      return;
+    }
 
     try {
       setSubmitting(true);
-      const newReview = {
+      
+      const newReviewPayload = {
         name: formData.name.trim(),
         role: formData.role.trim() || 'Client',
         company: formData.company.trim() || 'Verified Partner',
@@ -66,26 +73,33 @@ export default function Testimonials() {
         comment: formData.comment.trim(),
       };
 
+      // Direct insert
       const { data, error } = await supabase
         .from('client_reviews')
-        .insert([newReview])
+        .insert([newReviewPayload])
         .select();
 
       if (error) throw error;
 
-      if (data && data[0]) {
-        // Instant UI update
-        setReviewsList([data[0], ...reviewsList]);
-      }
+      // Agar data turant return hua toh use lein, warna local payload se instant screen update karein
+      const insertedItem = (data && data[0]) ? data[0] : {
+        ...newReviewPayload,
+        id: Date.now().toString(),
+        created_at: new Date().toISOString()
+      };
 
+      setReviewsList((prev) => [insertedItem, ...prev]);
       setSubmitted(true);
+
       setTimeout(() => {
         setSubmitted(false);
         setIsModalOpen(false);
         setFormData({ name: '', role: '', company: '', rating: 5, comment: '' });
       }, 1500);
-    } catch (err) {
+
+    } catch (err: any) {
       console.error('Error submitting review:', err);
+      setErrorMessage(err?.message || 'Database error. Please check Supabase permissions.');
     } finally {
       setSubmitting(false);
     }
@@ -128,7 +142,10 @@ export default function Testimonials() {
           </div>
 
           <button
-            onClick={() => setIsModalOpen(true)}
+            onClick={() => {
+              setErrorMessage(null);
+              setIsModalOpen(true);
+            }}
             className="flex items-center gap-2 px-6 py-3 rounded-xl bg-cyan-500/10 border border-cyan-400/30 text-cyan-300 hover:bg-cyan-400 hover:text-black font-semibold text-xs uppercase tracking-wider transition-all duration-300 shadow-[0_0_20px_rgba(34,211,238,0.15)] cursor-pointer w-fit"
           >
             <PlusCircle className="w-4 h-4" />
@@ -145,7 +162,10 @@ export default function Testimonials() {
           <div className="p-12 text-center border border-white/5 bg-white/[0.01] rounded-3xl">
             <p className="text-slate-400 text-sm font-mono mb-4">No reviews have been posted yet.</p>
             <button
-              onClick={() => setIsModalOpen(true)}
+              onClick={() => {
+                setErrorMessage(null);
+                setIsModalOpen(true);
+              }}
               className="text-xs uppercase tracking-wider font-mono text-cyan-400 hover:underline cursor-pointer"
             >
               + Click here to leave the first review
@@ -235,6 +255,13 @@ export default function Testimonials() {
                 </div>
               ) : (
                 <form onSubmit={handlePostReview} className="space-y-4">
+                  {errorMessage && (
+                    <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs flex items-center gap-2">
+                      <AlertCircle className="w-4 h-4 shrink-0" />
+                      <span>{errorMessage}</span>
+                    </div>
+                  )}
+
                   {/* Rating Selector */}
                   <div>
                     <label className="text-xs text-slate-400 block font-mono mb-2">
@@ -276,7 +303,7 @@ export default function Testimonials() {
                         required
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        placeholder=""
+                        placeholder="e.g. Rahul Sharma"
                         className="w-full px-3.5 py-2.5 rounded-xl bg-white/[0.04] border border-white/10 text-white text-xs placeholder-slate-500 focus:outline-none focus:border-cyan-400/60"
                       />
                     </div>
@@ -288,7 +315,7 @@ export default function Testimonials() {
                         type="text"
                         value={formData.role}
                         onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-                        placeholder=""
+                        placeholder="e.g. Founder"
                         className="w-full px-3.5 py-2.5 rounded-xl bg-white/[0.04] border border-white/10 text-white text-xs placeholder-slate-500 focus:outline-none focus:border-cyan-400/60"
                       />
                     </div>
@@ -303,7 +330,7 @@ export default function Testimonials() {
                       type="text"
                       value={formData.company}
                       onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                      placeholder=""
+                      placeholder="e.g. Tech Studio"
                       className="w-full px-3.5 py-2.5 rounded-xl bg-white/[0.04] border border-white/10 text-white text-xs placeholder-slate-500 focus:outline-none focus:border-cyan-400/60"
                     />
                   </div>
@@ -318,7 +345,7 @@ export default function Testimonials() {
                       rows={3}
                       value={formData.comment}
                       onChange={(e) => setFormData({ ...formData, comment: e.target.value })}
-                      placeholder=""
+                      placeholder="Share your experience working with us..."
                       className="w-full px-3.5 py-2.5 rounded-xl bg-white/[0.04] border border-white/10 text-white text-xs placeholder-slate-500 focus:outline-none focus:border-cyan-400/60 resize-none"
                     />
                   </div>
