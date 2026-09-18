@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ashujhaportfolio.vercel.app/sitemap.xml

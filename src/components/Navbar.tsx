@@ -43,28 +43,34 @@ export default function Navbar() {
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
         className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ${
-          scrolled ? 'bg-[#08080a]/90 backdrop-blur-md shadow-[0_10px_30px_rgba(0,0,0,0.8)] py-4' : 'py-6 bg-transparent'
+          scrolled
+            ? 'bg-[#08080a]/90 backdrop-blur-md shadow-[0_10px_30px_rgba(0,0,0,0.8)] py-3.5'
+            : 'py-5 bg-transparent'
         }`}
       >
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
           
-          {/* Brand Logo */}
-          <button onClick={() => scrollTo('#home')} className="flex items-center gap-2.5 text-left group">
-            <span className="font-sans font-black text-2xl tracking-wider text-white group-hover:text-cyan-400 transition-colors uppercase">
-              ASHU
-            </span>
-            <span className="font-sans font-black text-2xl tracking-wider text-white group-hover:text-cyan-400 transition-colors uppercase">
-              JHA
-            </span>
-          </button>
+          {/* Standalone Bold Logo (No Name, No Box) */}
+         {/* Standalone Bold Logo — High Visibility & Crisp White Glow */}
+<button
+  onClick={() => scrollTo('#home')}
+  className="flex items-center text-left group cursor-pointer focus:outline-none py-1"
+  aria-label="Home"
+>
+  <img
+    src="/ashu.svg"
+    alt="Ashu Jha Logo"
+    className="h-12 sm:h-20 w-auto max-w-[180px] object-contain transition-all duration-300 filter brightness-0 invert drop-shadow-[0_0_12px_rgba(34,211,238,0.7)] group-hover:scale-105 group-hover:drop-shadow-[0_0_20px_rgba(34,211,238,1)]"
+  />
+</button>
 
-          {/* Desktop Navigation Links — Bada Size + Bold */}
-          <div className="hidden md:flex items-center gap-2">
+          {/* Desktop Navigation Links */}
+          <div className="hidden md:flex items-center gap-1 lg:gap-2">
             {navLinks.map((link: NavLinkItem) => (
               <button
                 key={link.href}
                 onClick={() => scrollTo(link.href)}
-                className="px-4 py-2 text-sm lg:text-base font-bold uppercase tracking-wider text-slate-300 hover:text-white transition-colors relative group"
+                className="px-3.5 lg:px-4 py-2 text-sm lg:text-base font-bold uppercase tracking-wider text-slate-300 hover:text-white transition-colors relative group cursor-pointer"
               >
                 {link.label}
                 <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-cyan-400 group-hover:w-8 transition-all duration-300" />
@@ -73,12 +79,12 @@ export default function Navbar() {
           </div>
 
           {/* Right Action Buttons */}
-          <div className="hidden md:flex items-center gap-4">
+          <div className="hidden md:flex items-center gap-3.5">
             <a
               href={whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="px-4 py-2.5 rounded-full border border-emerald-500/40 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 text-sm font-bold tracking-wider transition-all flex items-center gap-2 group shadow-[0_0_15px_rgba(16,185,129,0.15)]"
+              className="h-10 sm:h-11 px-4 rounded-full border border-emerald-500/40 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 text-sm font-bold tracking-wider transition-all flex items-center gap-2 group shadow-[0_0_15px_rgba(16,185,129,0.15)]"
             >
               <span className="relative flex h-2.5 w-2.5">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
@@ -90,7 +96,7 @@ export default function Navbar() {
 
             <button
               onClick={() => scrollTo('#contact')}
-              className="group relative px-6 py-2.5 rounded-full overflow-hidden"
+              className="h-10 sm:h-11 group relative px-6 rounded-full overflow-hidden flex items-center justify-center cursor-pointer shadow-[0_0_20px_rgba(34,211,238,0.2)]"
             >
               <span className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-indigo-500" />
               <span className="relative flex items-center gap-1.5 text-sm font-bold uppercase tracking-wider text-[#0a0a0f]">
@@ -100,10 +106,10 @@ export default function Navbar() {
             </button>
           </div>
 
-          {/* Mobile Menu Button */}
+          {/* Mobile Menu Toggle Button */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="md:hidden w-10 h-10 flex items-center justify-center text-white"
+            className="md:hidden w-10 h-10 rounded-xl bg-white/[0.04] border border-white/10 flex items-center justify-center text-white cursor-pointer"
             aria-label="Toggle Menu"
           >
             {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -115,7 +121,7 @@ export default function Navbar() {
       <AnimatePresence>
         {mobileOpen && (
           <>
-            {/* Backdrop Blur Overlay: Bahar click karne se bhi close hoga */}
+            {/* Backdrop Blur Overlay */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -132,17 +138,19 @@ export default function Navbar() {
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
               className="fixed top-0 right-0 bottom-0 w-80 z-50 bg-[#08080a]/95 backdrop-blur-xl p-6 pt-6 md:hidden flex flex-col justify-between shadow-2xl"
             >
-              {/* Header with Close (X) Button */}
+              {/* Drawer Header with Clean Logo Only */}
               <div className="flex items-center justify-between pb-6 border-b border-slate-800/80">
-                <span className="font-sans font-black text-xl tracking-wider text-white uppercase">
-                  ASHU <span className="text-cyan-400">JHA</span>
-                </span>
+                <img
+                  src="/ashu.svg"
+                  alt="Ashu Jha Logo"
+                  className="h-9 w-auto object-contain"
+                />
                 <button
                   onClick={() => setMobileOpen(false)}
-                  className="w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-slate-300 hover:text-white transition-colors"
+                  className="w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-slate-300 hover:text-white transition-colors cursor-pointer"
                   aria-label="Close Menu"
                 >
-                  <X className="w-6 h-6" />
+                  <X className="w-5 h-5" />
                 </button>
               </div>
 
@@ -155,7 +163,7 @@ export default function Navbar() {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: i * 0.04 }}
                     onClick={() => scrollTo(link.href)}
-                    className="text-left px-4 py-3 text-base font-bold uppercase tracking-wider text-slate-200 hover:text-cyan-400 hover:bg-white/5 rounded-xl transition-all"
+                    className="text-left px-4 py-3 text-base font-bold uppercase tracking-wider text-slate-200 hover:text-cyan-400 hover:bg-white/5 rounded-xl transition-all cursor-pointer"
                   >
                     {link.label}
                   </motion.button>
@@ -176,7 +184,7 @@ export default function Navbar() {
 
                 <button
                   onClick={() => scrollTo('#contact')}
-                  className="w-full px-5 py-3 rounded-full bg-gradient-to-r from-cyan-400 to-indigo-500 text-sm font-bold uppercase tracking-wider text-[#0a0a0f]"
+                  className="w-full px-5 py-3 rounded-full bg-gradient-to-r from-cyan-400 to-indigo-500 text-sm font-bold uppercase tracking-wider text-[#0a0a0f] cursor-pointer"
                 >
                   Contact Us
                 </button>
