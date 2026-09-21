@@ -235,13 +235,14 @@ export default function Footer() {
 
         {/* Bottom Rights Bar */}
         <div className="pt-8 border-t border-white/[0.08] flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p className="text-xs font-mono text-slate-400">
-            &copy; {new Date().getFullYear()} Ashu Jha Studio. All rights reserved.
-          </p>
-          <p className="text-xs font-mono tracking-widest text-slate-400 uppercase">
+         <p className="text-xs font-mono tracking-widest text-slate-400 uppercase">
             We Design <span className="text-amber-400 mx-1">/</span> We Build <span className="text-amber-400 mx-1">/</span> You Scale
           </p>
         </div>
+          <p className="text-xs font-mono text-slate-400">
+            &copy; {new Date().getFullYear()} Ashu Jha Studio. All rights reserved.
+          </p>
+         
       </div>
     </footer>
   );

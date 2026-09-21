@@ -30,7 +30,7 @@ const projects: ProjectItem[] = [
     category: 'Web & Mobile App',
     desc: 'OmniQ AI — Real-Time Conversational Search & Reasoning Engine',
     image: '/3project.png',
-    link: 'https://yourprojectlink.com',
+    link: 'https://omniqai.vercel.app/',
   },
   {
     title: 'Arcade Quest',
