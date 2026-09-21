@@ -57,9 +57,88 @@ const links = [
   { label: 'Services', href: '#services' },
   { label: 'Work', href: '#work' },
   { label: 'Skills', href: '#skills' },
+  { label: 'Reviews', href: '#reviews' },
   { label: 'FAQ', href: '#faq' },
   { label: 'Contact', href: '#contact' },
 ];
+
+// ⚡ Code-based Vector Monogram Logo (Same as Navbar)
+const FooterBrandLogo = () => (
+  <div className="relative h-12 w-12 flex items-center justify-center flex-shrink-0">
+    <svg
+      viewBox="0 0 200 240"
+      className="h-full w-full overflow-visible"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <defs>
+        <filter id="footerGoldGlow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blurWide" />
+          <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blurMid" />
+          <feMerge>
+            <feMergeNode in="blurWide" />
+            <feMergeNode in="blurMid" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+
+        <linearGradient id="footerGoldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#fef08a" />
+          <stop offset="35%" stopColor="#f59e0b" />
+          <stop offset="80%" stopColor="#d97706" />
+          <stop offset="100%" stopColor="#b45309" />
+        </linearGradient>
+
+        <linearGradient id="footerGoldCore" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#ffffff" />
+          <stop offset="40%" stopColor="#fef3c7" />
+          <stop offset="100%" stopColor="#fde047" />
+        </linearGradient>
+      </defs>
+
+      {/* Layer 1: Corona Glow */}
+      <g opacity="0.4" stroke="#f59e0b" strokeLinecap="round" strokeLinejoin="round">
+        <path
+          d="M 120 40 C 40 70 15 130 25 180 C 35 225 95 240 130 215 C 160 190 155 130 110 95 C 75 70 45 105 40 145 C 36 175 60 205 90 205 C 120 205 135 170 130 135 C 120 75 100 30 90 10 C 85 2 92 10 100 35 L 180 170 C 200 200 210 185 190 160 C 160 120 120 120 90 135"
+          strokeWidth="10"
+          className="filter blur-[6px]"
+        />
+        <path
+          d="M 52 135 L 85 138 L 58 158 L 68 126 L 78 158 Z"
+          strokeWidth="7"
+          className="filter blur-[5px]"
+        />
+      </g>
+
+      {/* Layer 2: Main Ribbon */}
+      <g filter="url(#footerGoldGlow)" stroke="url(#footerGoldGrad)" strokeLinecap="round" strokeLinejoin="round">
+        <path
+          d="M 120 40 C 45 70 16 130 25 180 C 35 222 95 235 130 212 C 160 190 155 132 112 96 C 75 68 45 105 40 145 C 36 175 60 202 88 202 C 118 202 134 170 128 135 C 120 80 100 32 90 12 L 180 170 C 196 195 204 186 188 162 C 160 120 118 120 90 135"
+          strokeWidth="4"
+        />
+        <path
+          d="M 48 142 L 88 140 L 56 164 L 68 124 L 80 164 Z"
+          strokeWidth="3.4"
+        />
+      </g>
+
+      {/* Layer 3: Hot White Core */}
+      <g stroke="url(#footerGoldCore)" strokeLinecap="round" strokeLinejoin="round" opacity="0.95">
+        <path
+          d="M 120 40 C 45 70 16 130 25 180 C 35 222 95 235 130 212 C 160 190 155 132 112 96 C 75 68 45 105 40 145 C 36 175 60 202 88 202 C 118 202 134 170 128 135 C 120 80 100 32 90 12 L 180 170 C 196 195 204 186 188 162 C 160 120 118 120 90 135"
+          strokeWidth="1.8"
+        />
+        <path
+          d="M 48 142 L 88 140 L 56 164 L 68 124 L 80 164 Z"
+          strokeWidth="1.6"
+        />
+      </g>
+
+      <circle cx="90" cy="12" r="1.6" fill="#ffffff" />
+      <circle cx="190" cy="170" r="1.4" fill="#ffffff" />
+    </svg>
+  </div>
+);
 
 export default function Footer() {
   const scrollTo = (href: string) => {
@@ -67,42 +146,64 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative border-t border-white/5 overflow-hidden">
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[200px] bg-cyan-500/5 rounded-full blur-[100px]" />
+    <footer className="relative border-t border-white/[0.08] bg-[#07080c] overflow-hidden select-none text-white">
+      {/* Cinematic Top Ambient Glow */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[220px] bg-amber-500/10 rounded-full blur-[140px] pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-6 py-16 relative">
-        <div className="grid lg:grid-cols-3 gap-12 mb-12">
-          {/* Brand */}
-          <div className="flex flex-col items-start">
-            <h3 className="font-sans font-black text-2xl tracking-wider text-white uppercase mb-2">
-              Ashu Jha
-            </h3>
-            <p className="text-sm text-slate-400 leading-relaxed max-w-xs">
-              We design. We build. You scale.
+      <div className="max-w-7xl mx-auto px-6 py-16 relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-14 items-start">
+          
+          {/* Brand & Monogram Logo */}
+          <div className="md:col-span-5 flex flex-col items-start">
+            <div 
+              onClick={() => scrollTo('#home')}
+              className="flex items-center gap-3 group cursor-pointer select-none mb-3"
+            >
+              <FooterBrandLogo />
+              <div className="flex flex-col text-left">
+                <h3 className="font-sans font-black text-2xl tracking-wider text-white uppercase group-hover:text-amber-300 transition-colors leading-none">
+                   <span className="text-amber-400">ASHU Jha</span>
+                </h3>
+                <span className="text-[9px] uppercase tracking-[0.28em] font-mono text-slate-400 group-hover:text-amber-200 transition-colors mt-1">
+                  Digital Studio
+                </span>
+              </div>
+            </div>
+
+            <p className="text-sm text-slate-300 leading-relaxed max-w-sm font-light mt-2">
+             "Ashu Jha Digital Studio architects high-converting web applications, bespoke 3D digital experiences, and scalable AI systems engineered to turn vision into market-dominating brands."
             </p>
+
+            <div className="mt-4 flex items-center gap-2 font-mono text-xs text-amber-300/80">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399] animate-pulse" />
+              <span>Available for new client projects worldwide</span>
+            </div>
           </div>
 
-          {/* Links */}
-          <div>
-            <h4 className="font-display font-semibold text-sm uppercase tracking-wider text-gray-300 mb-4">
-              
+          {/* Quick Nav Links */}
+          <div className="md:col-span-3">
+            <h4 className="font-mono text-xs uppercase tracking-[0.25em] text-amber-400 font-bold mb-4">
+              Navigation
             </h4>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-2 gap-y-2.5 gap-x-4">
               {links.map((l) => (
                 <button
                   key={l.href}
                   onClick={() => scrollTo(l.href)}
-                  className="text-sm text-gray-400 hover:text-cyan-400 transition-colors text-left"
+                  className="text-sm font-mono text-slate-400 hover:text-amber-300 transition-colors text-left cursor-pointer flex items-center gap-1.5 group"
                 >
-                  {l.label}
+                  <span className="w-1 h-1 rounded-full bg-slate-600 group-hover:bg-amber-400 group-hover:shadow-[0_0_6px_#f59e0b] transition-all" />
+                  <span>{l.label}</span>
                 </button>
               ))}
             </div>
           </div>
 
-          {/* Socials */}
-          <div>
-            <h4 className="font-display font-semibold text-sm uppercase tracking-wider text-gray-300 mb-4">FOLLOW US</h4>
+          {/* 3D Social Media Buttons */}
+          <div className="md:col-span-4">
+            <h4 className="font-mono text-xs uppercase tracking-[0.25em] text-amber-400 font-bold mb-4">
+              Follow &amp; Connect
+            </h4>
             <div className="flex flex-wrap gap-3">
               {socials.map((s) => (
                 <motion.a
@@ -110,24 +211,35 @@ export default function Footer() {
                   href={s.href}
                   target={s.href.startsWith('http') ? '_blank' : undefined}
                   rel={s.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                  whileHover={{ y: -4 }}
-                  className="w-11 h-11 rounded-xl glass flex items-center justify-center text-gray-400 hover:text-cyan-400 hover:border-cyan-400/30 transition-all"
+                  whileHover={{ scale: 1.08, y: -3 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="relative group p-[1.5px] rounded-2xl overflow-hidden cursor-pointer shadow-[0_8px_20px_-6px_rgba(0,0,0,0.8)] transition-all duration-300"
                   aria-label={s.label}
                 >
-                  {s.svg}
+                  {/* Rotating Neon Ring on Hover */}
+                  <span className="absolute inset-[-1000%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#000000_0%,#f59e0b_45%,#fde047_50%,#f59e0b_55%,#000000_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+
+                  {/* Icon Body */}
+                  <div className="relative w-11 h-11 rounded-[14px] bg-gradient-to-b from-[#161720] to-[#0a0a0f] border border-white/10 group-hover:border-amber-400/40 backdrop-blur-xl flex items-center justify-center text-slate-400 group-hover:text-amber-300 transition-colors">
+                    {s.svg}
+                  </div>
                 </motion.a>
               ))}
             </div>
-            <p className="text-xs text-gray-500 mt-4">Available worldwide — 24/7 AI support</p>
+            <p className="text-xs text-slate-500 font-mono mt-4">
+            
+            </p>
           </div>
+
         </div>
 
-        <div className="pt-8 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p className="text-xs text-cream-500">
-            &copy; {new Date().getFullYear()} Ashu Jha. All rights reserved.
+        {/* Bottom Rights Bar */}
+        <div className="pt-8 border-t border-white/[0.08] flex flex-col sm:flex-row justify-between items-center gap-4">
+          <p className="text-xs font-mono text-slate-400">
+            &copy; {new Date().getFullYear()} Ashu Jha Studio. All rights reserved.
           </p>
-          <p className="text-xs text-cream-500 font-display tracking-wider">
-            We Design <span className="text-cream-500/50">/</span> We Build <span className="text-cyan-400/50">/</span> You Scale
+          <p className="text-xs font-mono tracking-widest text-slate-400 uppercase">
+            We Design <span className="text-amber-400 mx-1">/</span> We Build <span className="text-amber-400 mx-1">/</span> You Scale
           </p>
         </div>
       </div>

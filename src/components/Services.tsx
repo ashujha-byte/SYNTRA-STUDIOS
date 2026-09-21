@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useRef, useState } from 'react';
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import {
   Code2, Layers, Layout, Smartphone, Palette, PenTool, Image as ImageIcon,
   Gamepad2, Brain, Bot, ArrowRight, X, CheckCircle2, Send, Sparkles
@@ -108,13 +108,135 @@ const services: ServiceItem[] = [
   },
 ];
 
+// ⚡ 3D Interactive Tilt Service Card
+function TiltServiceCard({
+  service,
+  onSelect,
+}: {
+  service: ServiceItem;
+  onSelect: () => void;
+}) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const Icon = service.icon;
+
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  const mouseXSpring = useSpring(x, { stiffness: 180, damping: 20 });
+  const mouseYSpring = useSpring(y, { stiffness: 180, damping: 20 });
+
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ['12deg', '-12deg']);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ['-12deg', '12deg']);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    x.set(mouseX / width - 0.5);
+    y.set(mouseY / height - 0.5);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
+  return (
+    <div style={{ perspective: 1100 }} className="h-full">
+      <motion.div
+        ref={cardRef}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        style={{
+          rotateX,
+          rotateY,
+          transformStyle: 'preserve-3d',
+        }}
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="group relative h-full rounded-3xl p-[1.5px] overflow-hidden bg-gradient-to-b from-white/15 via-white/5 to-transparent shadow-[0_15px_30px_-10px_rgba(0,0,0,0.9),0_0_20px_rgba(245,158,11,0.06)] hover:shadow-[0_20px_45px_-10px_rgba(0,0,0,0.95),0_0_35px_rgba(245,158,11,0.25)] transition-shadow duration-500 flex flex-col justify-between"
+      >
+        {/* 3D Rotating Golden Neon Border Ring on Hover */}
+        <span className="absolute inset-[-1000%] animate-[spin_5s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#000000_0%,#f59e0b_45%,#fde047_50%,#f59e0b_55%,#000000_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+
+        {/* Card Inner Body */}
+        <div className="relative h-full w-full rounded-[23px] bg-[#0c0d15]/95 border border-white/[0.08] group-hover:border-amber-400/40 backdrop-blur-2xl flex flex-col justify-between overflow-hidden transition-colors duration-300">
+          
+          {/* Top Image Showcase */}
+          <div className="relative w-full h-48 overflow-hidden">
+            <img
+              src={service.image}
+              alt={service.title}
+              className="w-full h-full object-cover opacity-80 group-hover:opacity-95 group-hover:scale-105 transition-all duration-700"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0c0d15] via-transparent to-transparent" />
+            
+            {/* 3D Floating Icon Shield */}
+            <div 
+              style={{ transform: 'translateZ(30px)' }}
+              className="absolute top-4 left-4 w-11 h-11 rounded-xl bg-[#07080c]/90 border border-amber-400/40 flex items-center justify-center text-amber-300 shadow-[0_0_15px_rgba(245,158,11,0.3)] group-hover:scale-110 transition-transform"
+            >
+              <Icon className="w-5 h-5 stroke-[2.2]" />
+            </div>
+          </div>
+
+          {/* Card Info & Action */}
+          <div className="p-6 flex flex-col justify-between flex-1">
+            <div>
+              <h3 className="font-sans font-bold text-xl text-white mb-2 group-hover:text-amber-200 transition-colors drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+                {service.title}
+              </h3>
+              <p className="text-sm text-slate-300 leading-relaxed font-light mb-6">
+                {service.tagline}
+              </p>
+            </div>
+
+            {/* 3D Animated "View Details & Inquire" Button */}
+            <motion.button
+              whileHover={{ scale: 1.02, y: -2 }}
+              whileTap={{ scale: 0.96, y: 2 }}
+              onClick={onSelect}
+              className="relative group/btn p-[1.5px] rounded-full overflow-hidden cursor-pointer shadow-[0_10px_22px_-6px_rgba(0,0,0,0.8),0_3px_8px_rgba(245,158,11,0.15)] active:shadow-[0_4px_10px_rgba(0,0,0,0.9)] transition-all duration-300 w-full"
+            >
+              {/* 3D Dynamic Rotating Neon Light Ring */}
+              <span className="absolute inset-[-1000%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#000000_0%,#f59e0b_45%,#fde047_50%,#f59e0b_55%,#000000_100%)] opacity-70 group-hover/btn:opacity-100 transition-opacity duration-500" />
+
+              {/* Button Inner Body with 3D Depth bevel & Glassmorphism */}
+              <div className="relative py-3 px-4 rounded-full bg-gradient-to-b from-[#161720] to-[#0a0a0f] border-t border-white/25 border-b border-black/80 backdrop-blur-xl flex items-center justify-center gap-2 overflow-hidden transition-all duration-300 group-hover/btn:from-[#1d1e2b] group-hover/btn:to-[#0e0f17]">
+                
+                {/* Diagonal 3D Holographic Light Shimmer on Hover */}
+                <span className="absolute -top-10 -bottom-10 -left-12 w-8 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-[-25deg] group-hover/btn:left-[140%] transition-all duration-1000 ease-out pointer-events-none" />
+
+                {/* Subtle Inner Floor Ambient Glow */}
+                <span className="absolute bottom-0 inset-x-4 h-[1px] bg-gradient-to-r from-transparent via-amber-400/50 to-transparent opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300" />
+
+                {/* 3D Elevated Label & Icon */}
+                <span className="font-mono text-xs uppercase tracking-widest text-slate-200 group-hover/btn:text-amber-200 font-bold transition-colors drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400 group-hover/btn:shadow-[0_0_8px_#f59e0b] transition-all" />
+                  <span>View Details &amp; Inquire</span>
+                  <ArrowRight className="w-3.5 h-3.5 text-amber-400 group-hover/btn:translate-x-1 transition-transform" />
+                </span>
+              </div>
+            </motion.button>
+          </div>
+        </div>
+      </motion.div>
+    </div>
+  );
+}
+
 export default function Services() {
   const [selectedService, setSelectedService] = useState<ServiceItem | null>(null);
   const [submitted, setSubmitted] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const YOUR_EMAIL = 'aetherixofficialsupport@gmai.com';
+  const YOUR_EMAIL = 'aetherixofficialsupport@gmail.com';
 
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -134,7 +256,7 @@ export default function Services() {
       return;
     }
 
-    // 2. Strict Email Validation (Must have @ and a valid domain)
+    // 2. Strict Email Validation
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!email || !emailPattern.test(email)) {
       setErrorMessage('Please enter a valid email address (e.g. name@domain.com).');
@@ -181,86 +303,90 @@ export default function Services() {
   };
 
   return (
-    <section id="services" className="relative py-24 lg:py-32 bg-[#07080c] text-white select-none">
-      <div className="max-w-7xl mx-auto px-6 md:px-12">
-        {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <span className="text-xs font-mono tracking-[0.3em] text-cyan-400 uppercase">WHAT WE DO</span>
-          <h2 className="font-sans text-4xl lg:text-5xl font-black mt-4 uppercase tracking-tight">
-            SERVICES THAT COVER <span className="bg-gradient-to-r from-cyan-400 via-teal-300 to-indigo-400 bg-clip-text text-transparent">THE ENTIRE SPECTRUM</span>
+    <section id="services" className="relative py-24 lg:py-32 bg-[#07080c] text-white select-none overflow-hidden">
+      {/* Background Ambient Glow */}
+      <div className="absolute top-1/4 left-0 w-96 h-96 bg-amber-500/10 rounded-full blur-[150px] pointer-events-none" />
+      <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-yellow-600/10 rounded-full blur-[150px] pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
+        
+        {/* 3D Styled Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7 }}
+          className="text-center max-w-3xl mx-auto mb-16"
+        >
+          {/* Floating Pill */}
+        <motion.div
+  whileHover={{ scale: 1.04, y: -2 }}
+  whileTap={{ scale: 0.96, y: 2 }}
+  className="relative group p-[1.5px] rounded-full overflow-hidden cursor-pointer shadow-[0_10px_22px_-6px_rgba(0,0,0,0.8),0_3px_8px_rgba(245,158,11,0.15)] active:shadow-[0_4px_10px_rgba(0,0,0,0.9)] transition-all duration-300 inline-flex mb-6"
+>
+  {/* 3D Dynamic Rotating Neon Light Ring */}
+  <span className="absolute inset-[-1000%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#000000_0%,#f59e0b_45%,#fde047_50%,#f59e0b_55%,#000000_100%)] opacity-75 group-hover:opacity-100 transition-opacity duration-500" />
+
+  {/* Button Inner Body with 3D Depth Bevel & Glassmorphism */}
+  <div className="relative px-5 py-2 rounded-full bg-gradient-to-b from-[#161720] to-[#0a0a0f] border-t border-white/25 border-b border-black/80 backdrop-blur-xl flex items-center justify-center gap-2 overflow-hidden transition-all duration-300 group-hover:from-[#1d1e2b] group-hover:to-[#0e0f17]">
+    
+    {/* Diagonal 3D Holographic Light Shimmer on Hover */}
+    <span className="absolute -top-10 -bottom-10 -left-12 w-8 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-[-25deg] group-hover:left-[140%] transition-all duration-1000 ease-out pointer-events-none" />
+
+    {/* Subtle Inner Floor Ambient Glow */}
+    <span className="absolute bottom-0 inset-x-3 h-[1px] bg-gradient-to-r from-transparent via-amber-400/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+    {/* 3D Elevated Icon & Label */}
+    <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+    <span className="font-mono text-xs uppercase tracking-[0.25em] text-slate-200 group-hover:text-amber-200 font-bold transition-colors drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+      WHAT WE DO
+    </span>
+    <span className="w-1.5 h-1.5 rounded-full bg-amber-400 shadow-[0_0_8px_#f59e0b] animate-pulse" />
+  </div>
+</motion.div>
+
+          <h2 className="font-sans text-4xl lg:text-5xl font-black mt-2 uppercase tracking-tight leading-[1.1] text-white drop-shadow-[0_10px_25px_rgba(0,0,0,0.9)]">
+            SERVICES THAT COVER{' '}
+            <span className="relative inline-block text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-yellow-400 to-amber-500 drop-shadow-[0_0_30px_rgba(245,158,11,0.35)]">
+              THE ENTIRE SPECTRUM
+            </span>
           </h2>
+
           <p className="mt-5 text-slate-300 text-sm sm:text-base font-light leading-relaxed">
             From the first sketch to the final deploy — everything you need to bring your digital vision to life, under one roof.
           </p>
-        </div>
+        </motion.div>
 
-        {/* Services Grid */}
+        {/* 3D Services Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
-          {services.map((s) => {
-            const Icon = s.icon;
-            return (
-              <div
-                key={s.title}
-                className="group rounded-3xl border border-white/10 bg-[#0d0e15] overflow-hidden flex flex-col justify-between hover:border-cyan-500/40 transition-all duration-300"
-              >
-                {/* Image Showcase */}
-                <div className="relative w-full h-48 overflow-hidden">
-                  <img
-                    src={s.image}
-                    alt={s.title}
-                    className="w-full h-full object-cover opacity-75 group-hover:opacity-90 group-hover:scale-105 transition-all duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0d0e15] via-transparent to-transparent" />
-                  
-                  <div className="absolute top-4 left-4 w-10 h-10 rounded-xl bg-[#07080c]/85 border border-white/15 flex items-center justify-center text-cyan-300">
-                    <Icon className="w-5 h-5" />
-                  </div>
-                </div>
-
-                {/* Content */}
-                <div className="p-6 flex flex-col justify-between flex-1">
-                  <div>
-                    <h3 className="font-sans font-bold text-xl text-white mb-2 group-hover:text-cyan-300 transition-colors">
-                      {s.title}
-                    </h3>
-                    <p className="text-sm text-slate-300 leading-relaxed font-light mb-6">
-                      {s.tagline}
-                    </p>
-                  </div>
-
-                  {/* View Details Action Button */}
-                  <button
-                    onClick={() => {
-                      setSelectedService(s);
-                      setErrorMessage(null);
-                    }}
-                    className="w-full py-3 px-4 rounded-xl border border-white/15 bg-white/[0.03] hover:bg-cyan-400 hover:text-black hover:border-cyan-400 text-white font-mono text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2"
-                  >
-                    <span>View Details &amp; Inquire</span>
-                    <ArrowRight size={14} />
-                  </button>
-                </div>
-              </div>
-            );
-          })}
+          {services.map((s) => (
+            <TiltServiceCard
+              key={s.title}
+              service={s}
+              onSelect={() => {
+                setSelectedService(s);
+                setErrorMessage(null);
+              }}
+            />
+          ))}
         </div>
       </div>
 
       {/* MODAL POPUP: Service Deep-Dive + Direct Client Lead Form */}
       <AnimatePresence>
         {selectedService && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto backdrop-blur-md bg-black/80">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto backdrop-blur-md bg-black/85">
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative w-full max-w-4xl bg-[#0c0d14] border border-white/15 rounded-3xl overflow-hidden shadow-2xl my-8 text-white max-h-[90vh] flex flex-col"
+              className="relative w-full max-w-4xl bg-[#0c0d15] border border-amber-400/30 rounded-3xl overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.9)] my-8 text-white max-h-[90vh] flex flex-col"
             >
               {/* Modal Top Header Bar */}
               <div className="flex items-center justify-between px-6 py-5 border-b border-white/10 bg-[#08080c]">
                 <div className="flex items-center gap-2">
-                  <Sparkles size={16} className="text-cyan-400" />
-                  <span className="font-mono text-xs uppercase tracking-widest text-cyan-400">
+                  <Sparkles size={16} className="text-amber-400" />
+                  <span className="font-mono text-xs uppercase tracking-widest text-amber-300 font-bold">
                     Ashu Studio &amp; Inquiry
                   </span>
                 </div>
@@ -269,7 +395,7 @@ export default function Services() {
                     setSelectedService(null);
                     setErrorMessage(null);
                   }}
-                  className="w-9 h-9 rounded-full bg-white/[0.05] border border-white/10 flex items-center justify-center text-slate-300 hover:text-white hover:bg-white/20 transition-all"
+                  className="w-9 h-9 rounded-full bg-white/[0.05] border border-white/10 flex items-center justify-center text-slate-300 hover:text-white hover:bg-white/20 transition-all cursor-pointer"
                 >
                   <X size={18} />
                 </button>
@@ -284,13 +410,13 @@ export default function Services() {
                     <h3 className="font-sans font-black text-2xl sm:text-3xl uppercase tracking-tight text-white mb-2">
                       {selectedService.title}
                     </h3>
-                    <p className="text-sm text-cyan-300/90 font-mono">
+                    <p className="text-sm text-amber-300/90 font-mono">
                       {selectedService.tagline}
                     </p>
                   </div>
 
                   <div className="space-y-2">
-                    <span className="font-mono text-xs uppercase text-cream-500 tracking-wider">About This Service</span>
+                    <span className="font-mono text-xs uppercase text-amber-400/90 tracking-wider">About This Service</span>
                     <p className="text-sm text-slate-300 leading-relaxed font-light">
                       {selectedService.overview}
                     </p>
@@ -298,11 +424,11 @@ export default function Services() {
 
                   {/* Deliverables */}
                   <div className="space-y-3">
-                    <span className="font-mono text-xs uppercase text-cream-500 tracking-wider">What You Receive</span>
+                    <span className="font-mono text-xs uppercase text-amber-400/90 tracking-wider">What You Receive</span>
                     <div className="space-y-2">
                       {selectedService.deliverables.map((item, idx) => (
                         <div key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-200">
-                          <CheckCircle2 size={16} className="text-emerald-400 shrink-0 mt-0.5" />
+                          <CheckCircle2 size={16} className="text-amber-400 shrink-0 mt-0.5" />
                           <span>{item}</span>
                         </div>
                       ))}
@@ -311,7 +437,7 @@ export default function Services() {
 
                   {/* Tools Stack */}
                   <div className="space-y-2">
-                    <span className="font-mono text-xs uppercase text-cream-500 tracking-wider">Tech &amp; Tools Used</span>
+                    <span className="font-mono text-xs uppercase text-amber-400/90 tracking-wider">Tech &amp; Tools Used</span>
                     <div className="flex flex-wrap gap-2">
                       {selectedService.toolsUsed.map((tool) => (
                         <span
@@ -329,7 +455,7 @@ export default function Services() {
                 <div className="lg:col-span-6 rounded-2xl border border-white/10 bg-[#08080c] p-6 flex flex-col justify-between">
                   {submitted ? (
                     <div className="py-12 flex flex-col items-center justify-center text-center space-y-3">
-                      <CheckCircle2 size={48} className="text-emerald-400 animate-bounce" />
+                      <CheckCircle2 size={48} className="text-amber-400 animate-bounce" />
                       <h4 className="font-sans font-bold text-xl text-white">Inquiry Received</h4>
                       <p className="text-xs text-slate-400 max-w-xs font-mono">
                         Your project details have been sent directly to our lead engineering desk. We will reach out shortly.
@@ -338,7 +464,7 @@ export default function Services() {
                   ) : (
                     <form onSubmit={handleFormSubmit} noValidate className="space-y-4">
                       <div>
-                        <span className="font-mono text-xs uppercase text-cyan-400 tracking-wider block mb-1">
+                        <span className="font-mono text-xs uppercase text-amber-400 tracking-wider block mb-1 font-bold">
                           Direct Service Inquiry
                         </span>
                         <p className="text-xs text-slate-400 mb-2">
@@ -354,69 +480,83 @@ export default function Services() {
                       )}
 
                       <input type="hidden" name="Selected Service" value={selectedService.title} />
-                      <input type="hidden" name="_subject" value={`New Inquiry for ${selectedService.title} - Syntra Studio`} />
+                      <input type="hidden" name="_subject" value={`New Inquiry for ${selectedService.title} - Ashu Studio`} />
                       <input type="hidden" name="_captcha" value="false" />
 
                       <div>
                         <label className="block text-[11px] font-mono text-slate-400 uppercase mb-1">
-                          Your Name <span className="text-cyan-400">*</span>
+                          Your Name <span className="text-amber-400">*</span>
                         </label>
                         <input
                           type="text"
                           name="Client Name"
                           required
                           placeholder=""
-                          className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-white/[0.03] text-sm text-white focus:outline-none focus:border-cyan-400"
+                          className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-white/[0.03] text-sm text-white focus:outline-none focus:border-amber-400 transition-colors"
                         />
                       </div>
 
                       <div>
                         <label className="block text-[11px] font-mono text-slate-400 uppercase mb-1">
-                          Your Email <span className="text-cyan-400">*</span>
+                          Your Email <span className="text-amber-400">*</span>
                         </label>
                         <input
                           type="email"
                           name="Client Email"
                           required
                           placeholder=""
-                          className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-white/[0.03] text-sm text-white focus:outline-none focus:border-cyan-400"
+                          className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-white/[0.03] text-sm text-white focus:outline-none focus:border-amber-400 transition-colors"
                         />
                       </div>
 
                       <div>
                         <label className="block text-[11px] font-mono text-slate-400 uppercase mb-1">
-                          Phone / WhatsApp Number <span className="text-cyan-400">*</span>
+                          Phone / WhatsApp Number <span className="text-amber-400">*</span>
                         </label>
                         <input
                           type="tel"
                           name="Client Phone"
                           required
                           placeholder=""
-                          className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-white/[0.03] text-sm text-white focus:outline-none focus:border-cyan-400"
+                          className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-white/[0.03] text-sm text-white focus:outline-none focus:border-amber-400 transition-colors"
                         />
                       </div>
 
                       <div>
                         <label className="block text-[11px] font-mono text-slate-400 uppercase mb-1">
-                          Project Details / Requirements <span className="text-cyan-400">*</span>
+                          Project Details / Requirements <span className="text-amber-400">*</span>
                         </label>
                         <textarea
                           name="Project Details"
                           rows={3}
                           required
                           placeholder=""
-                          className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-white/[0.03] text-sm text-white focus:outline-none focus:border-cyan-400 resize-none"
+                          className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-white/[0.03] text-sm text-white focus:outline-none focus:border-amber-400 resize-none transition-colors"
                         />
                       </div>
 
-                      <button
+                      {/* 3D Animated "Send Project Inquiry" Button */}
+                      <motion.button
                         type="submit"
                         disabled={isSubmitting}
-                        className="w-full py-3.5 rounded-xl bg-cyan-400 hover:bg-cyan-300 disabled:opacity-50 text-black font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(34,211,238,0.3)] mt-2"
+                        whileHover={{ scale: 1.02, y: -2 }}
+                        whileTap={{ scale: 0.96, y: 2 }}
+                        className="relative group/submit p-[1.5px] rounded-full overflow-hidden cursor-pointer shadow-[0_12px_25px_-8px_rgba(0,0,0,0.8),0_4px_10px_rgba(245,158,11,0.15)] active:shadow-[0_4px_10px_rgba(0,0,0,0.9)] transition-all duration-300 w-full mt-2 disabled:opacity-50"
                       >
-                        <Send size={14} />
-                        <span>{isSubmitting ? 'Verifying & Sending...' : 'Send Project Inquiry'}</span>
-                      </button>
+                        {/* 3D Rotating Neon Ring */}
+                        <span className="absolute inset-[-1000%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#000000_0%,#f59e0b_45%,#fde047_50%,#f59e0b_55%,#000000_100%)] opacity-70 group-hover/submit:opacity-100 transition-opacity duration-500" />
+
+                        {/* Button Inner Glass */}
+                        <div className="relative py-3.5 px-6 rounded-full bg-gradient-to-b from-[#161720] to-[#0a0a0f] border-t border-white/25 border-b border-black/80 backdrop-blur-xl flex items-center justify-center gap-2 overflow-hidden transition-all duration-300 group-hover/submit:from-[#1d1e2b] group-hover/submit:to-[#0e0f17]">
+                          <span className="absolute -top-10 -bottom-10 -left-12 w-8 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-[-25deg] group-hover/submit:left-[140%] transition-all duration-1000 ease-out pointer-events-none" />
+                          <span className="absolute bottom-0 inset-x-4 h-[1px] bg-gradient-to-r from-transparent via-amber-400/50 to-transparent opacity-0 group-hover/submit:opacity-100 transition-opacity duration-300" />
+                          
+                          <Send size={14} className="text-amber-400" />
+                          <span className="font-mono text-xs uppercase tracking-widest text-slate-200 group-hover/submit:text-amber-200 font-bold transition-colors">
+                            {isSubmitting ? 'Verifying & Sending...' : 'Send Project Inquiry'}
+                          </span>
+                        </div>
+                      </motion.button>
                     </form>
                   )}
                 </div>
